@@ -26,6 +26,7 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 					activeId={this.activePage}
 					editable={false}
 					focused={this.focusedPage}
+					onDoubleClick={e => this.handleDoubleClick(e)}
 					onFocus={() => this.handleFocus}
 					pages={this.getProjectPages()}
 				/>
@@ -58,7 +59,8 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 
 	protected handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {
 		e.preventDefault();
-		this.getActivePage(e.target as HTMLElement, 'titleId');
+		console.log(e);
+		// this.getActivePage(e.target as HTMLElement, 'titleId');
 	}
 
 	protected handleEditMode(): boolean {
