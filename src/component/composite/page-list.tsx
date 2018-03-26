@@ -7,12 +7,15 @@ import { PreviewTile } from '../../lsg/patterns/preview-tile';
 import { PageRef } from '../../store/project/page-ref';
 
 export interface PageListProps {
-	activeId: string;
+	activePage: string;
+	activeTitle: string;
 	editable: boolean;
 	focused: boolean;
+	handleChange: React.ChangeEventHandler<HTMLInputElement>;
 	pages: PageRef[];
 	onEdit: any;
 	onFocus: any;
+	value: string;
 }
 
 export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.Element => (
@@ -20,8 +23,11 @@ export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.El
 		{props.pages.map((page: PageRef, i: number) => {
 			let focused = false;
 			let editable = false;
-			if (page.getId() === props.activeId) {
+			if (page.getId() === props.activePage) {
 				focused = props.onFocus();
+			}
+			if (page.getId() === props.activeTitle) {
+				editable = props.onEdit();
 			}
 			return (
 				<Space key={i} size={Size.S}>
@@ -29,8 +35,9 @@ export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.El
 						id={page.getId()}
 						editable={editable}
 						focused={focused}
+						handleChange={props.handleChange}
 						name={page.getName()}
-						value={'placeholder'}
+						value={props.value}
 					/>
 				</Space>
 			);

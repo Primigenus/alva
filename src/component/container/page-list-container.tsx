@@ -18,17 +18,21 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 	@MobX.observable protected activeTitle: string = '';
 	@MobX.observable protected focusedPage: boolean = false;
 	@MobX.observable protected editablePage: boolean = false;
+	@MobX.observable protected pageNameInputValue: string = '';
 
 	public render(): JSX.Element {
 		return (
 			<div onClick={e => this.handleClick(e)} onDoubleClick={e => this.handleDoubleClick(e)}>
 				<PageList
-					activeId={this.activePage}
+					activePage={this.activePage}
+					activeTitle={this.activeTitle}
 					editable={this.editablePage}
 					focused={this.focusedPage}
+					handleChange={this.handleInputChange}
 					onEdit={() => this.handleEditMode}
 					onFocus={() => this.handleFocus}
 					pages={this.getProjectPages()}
+					value={this.pageNameInputValue}
 				/>
 			</div>
 		);
@@ -44,10 +48,23 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 		const data = target.dataset;
 		ids.forEach((id: string) => {
 			if (id === data[name]) {
-				return (this.activePage = data[name] || '');
+				if (Object.keys(data)[0] === 'id') {
+					return (this.activePage = data[name] || '');
+				}
+				if (Object.keys(data)[0] === 'titleId') {
+					return (this.activeTitle = data[name] || '');
+				}
 			}
 			return '';
 		});
+	}
+
+	protected getInputValueName(value: string) {
+		console.log(value);
+	}
+
+	protected handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+		this.getInputValueName(e.target.value);
 	}
 
 	protected handleClick(e: React.MouseEvent<HTMLElement>): void {
@@ -58,13 +75,15 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 
 	protected handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {
 		e.preventDefault();
-		console.log(e.target);
 		this.getActivePage(e.target as HTMLElement, 'titleId');
 	}
 
+	@MobX.action
 	protected handleEditMode(): boolean {
 		return (this.editablePage = !this.editablePage);
 	}
+
+	@MobX.action
 	protected handleFocus(): boolean {
 		return (this.focusedPage = !this.focusedPage);
 	}
