@@ -2,7 +2,7 @@ import * as MobX from 'mobx';
 import * as React from 'react';
 
 import { observer } from 'mobx-react';
-import { PageList } from './page-list';
+import { PageList } from '../composite/page-list';
 import { PageRef } from '../../store/project/page-ref';
 import { Project } from '../../store/project/project';
 
@@ -21,12 +21,12 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 
 	public render(): JSX.Element {
 		return (
-			<div onClick={e => this.handleClick(e)}>
+			<div onClick={e => this.handleClick(e)} onDoubleClick={e => this.handleDoubleClick(e)}>
 				<PageList
 					activeId={this.activePage}
-					editable={false}
+					editable={this.editablePage}
 					focused={this.focusedPage}
-					onDoubleClick={e => this.handleDoubleClick(e)}
+					onEdit={() => this.handleEditMode}
 					onFocus={() => this.handleFocus}
 					pages={this.getProjectPages()}
 				/>
@@ -42,10 +42,8 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 	protected getActivePage(target: HTMLElement, name: string): string | void {
 		const ids: string[] = this.getProjectPages().map(page => page.getId());
 		const data = target.dataset;
-
 		ids.forEach((id: string) => {
 			if (id === data[name]) {
-				console.log(data[name], name, data);
 				return (this.activePage = data[name] || '');
 			}
 			return '';
@@ -55,18 +53,19 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 	protected handleClick(e: React.MouseEvent<HTMLElement>): void {
 		e.preventDefault();
 		this.getActivePage(e.target as HTMLElement, 'id');
+		this.getActivePage(e.target as HTMLElement, 'titleId');
 	}
 
 	protected handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {
 		e.preventDefault();
-		console.log(e);
-		// this.getActivePage(e.target as HTMLElement, 'titleId');
+		console.log(e.target);
+		this.getActivePage(e.target as HTMLElement, 'titleId');
 	}
 
 	protected handleEditMode(): boolean {
 		return (this.editablePage = !this.editablePage);
 	}
-	protected handleFocus(): void {
-		this.focusedPage = !this.focusedPage;
+	protected handleFocus(): boolean {
+		return (this.focusedPage = !this.focusedPage);
 	}
 }

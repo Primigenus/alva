@@ -11,14 +11,15 @@ export interface PageListProps {
 	editable: boolean;
 	focused: boolean;
 	pages: PageRef[];
-	onDoubleClick?: React.MouseEventHandler<HTMLElement>;
-	onFocus(): any;
+	onEdit: any;
+	onFocus: any;
 }
 
 export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.Element => (
 	<Layout>
 		{props.pages.map((page: PageRef, i: number) => {
 			let focused = false;
+			let editable = false;
 			if (page.getId() === props.activeId) {
 				focused = props.onFocus();
 			}
@@ -26,7 +27,7 @@ export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.El
 				<Space key={i} size={Size.S}>
 					<PreviewTile
 						id={page.getId()}
-						editable={false}
+						editable={editable}
 						focused={focused}
 						name={page.getName()}
 						value={'placeholder'}
