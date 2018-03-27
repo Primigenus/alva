@@ -16,7 +16,6 @@ import { createMenu } from '../electron/menu';
 import * as MobX from 'mobx';
 import { observer } from 'mobx-react';
 import { Page } from '../store/page/page';
-import { PageList as PageListOld } from './container/page-list-dropdown_old';
 import * as PathUtils from 'path';
 import { PatternListContainer } from './container/pattern-list';
 import PatternsPane from '../lsg/patterns/panes/patterns-pane';
@@ -26,14 +25,13 @@ import { ProjectList } from './container/project-list';
 import { PropertyList } from './container/property-list';
 import PropertyPane from '../lsg/patterns/panes/property-pane';
 const { app, dialog } = remote;
+import { PageListContainer } from './container/page-list-container';
+import { PageListPreview } from './composite/page-list-preview';
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import Space, { Size as SpaceSize } from '../lsg/patterns/space';
 import SplashScreen from '../lsg/patterns/splash-screen';
 import { Store } from '../store/store';
-
-import { PageListContainer } from './container/page-list-container';
-import { PageListPreview } from './composite/page-list-preview';
 
 // prevent app zooming
 webFrame.setVisualZoomLevelLimits(1, 1);
@@ -194,25 +192,22 @@ class App extends React.Component {
 							lastChangedDate={this.getLastChangedDate().toString()}
 							headline={title}
 						>
-							<PageListContainer store={this.props.store} />
-						</PageListPreview>
-						// <SideBar key="left" directionVertical hasPaddings>
-						// 	<ElementPane>
-						// 		<Space sizeBottom={SpaceSize.L}>
-						// 			<PageListOld store={this.props.store} />
-						// 		</Space>
-						// 		<ElementList store={this.props.store} />
-						// 	</ElementPane>
-						// 	<PatternsPane>
-						// 		<PatternListContainer store={this.props.store} />
-						// 	</PatternsPane>
-						// </SideBar>,
-						// <PreviewPaneWrapper key="center" previewFrame={previewFramePath} />,
-						// <SideBar key="right" directionVertical hasPaddings>
-						// 	<PropertyPane>
-						// 		<PropertyList store={this.props.store} />
-						// 	</PropertyPane>
-						// </SideBar>
+							<PageListContainer />
+						</PageListPreview>,
+						<SideBar key="left" directionVertical hasPaddings>
+							<ElementPane>
+								<ElementList />
+							</ElementPane>
+							<PatternsPane>
+								<PatternListContainer />
+							</PatternsPane>
+						</SideBar>,
+						<PreviewPaneWrapper key="center" previewFrame={previewFramePath} />,
+						<SideBar key="right" directionVertical hasPaddings>
+							<PropertyPane>
+								<PropertyList />
+							</PropertyPane>
+						</SideBar>
 					]}
 					{!project && (
 						<SplashScreen>

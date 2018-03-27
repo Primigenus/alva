@@ -3,14 +3,9 @@ import * as React from 'react';
 
 import { observer } from 'mobx-react';
 import { PageList } from '../composite/page-list';
-import { PageRef } from '../../store/project/page-ref';
-import { Project } from '../../store/project/project';
-
+import { PageRef } from '../../store/page/page-ref';
+import { Project } from '../../store/project';
 import { Store } from '../../store/store';
-
-export interface PageListContainerProps {
-	store: Store;
-}
 
 export interface PageStateProps {
 	focused: boolean;
@@ -19,7 +14,7 @@ export interface PageStateProps {
 }
 
 @observer
-export class PageListContainer extends React.Component<PageListContainerProps> {
+export class PageListContainer extends React.Component<{}> {
 	@MobX.observable protected activePage: string = '';
 	@MobX.observable protected activeTitle: string = '';
 	@MobX.observable protected editablePage: boolean = false;
@@ -55,7 +50,8 @@ export class PageListContainer extends React.Component<PageListContainerProps> {
 	}
 
 	protected getProjectPages(): PageRef[] {
-		const project: Project | undefined = this.props.store.getCurrentProject();
+		const store: Store = Store.getInstance();
+		const project: Project | undefined = store.getCurrentProject();
 		return project ? project.getPages() : [];
 	}
 
