@@ -79,12 +79,12 @@ class App extends React.Component {
 		}
 	}
 
-	protected getLastChangedDate(): number {
-		return Date.now();
-	}
-
 	protected getLastChangedAuthor(): string {
 		return 'Max Mustermann';
+	}
+
+	protected getLastChangedDate(): number {
+		return Date.now();
 	}
 
 	@MobX.action

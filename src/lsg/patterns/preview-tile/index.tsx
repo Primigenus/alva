@@ -1,17 +1,16 @@
-import * as React from 'react';
-import styled from 'styled-components';
-
 import { colors } from '../colors';
 import Input, { InputTypes } from '../input';
+import * as React from 'react';
 import { getSpace, Size } from '../space';
+import styled from 'styled-components';
 
 export interface PreviewTileProps {
 	editable: boolean;
-	id?: string;
 	focused: boolean;
 	handleChange?: React.ChangeEventHandler<HTMLInputElement>;
-	handleClick?: React.MouseEventHandler<HTMLElement>;
+	id?: string;
 	name: string;
+	onClick?: React.MouseEventHandler<HTMLElement>;
 	value: string;
 }
 
@@ -62,7 +61,7 @@ const StyledEditableTitle = styled(Input)`
 `;
 
 export const PreviewTile: React.StatelessComponent<PreviewTileProps> = (props): JSX.Element => (
-	<StyledPreview data-id={props.id}>
+	<StyledPreview data-id={props.id} onClick={props.onClick}>
 		{props.editable ? (
 			<StyledEditableTitle
 				data-title-id={props.id}

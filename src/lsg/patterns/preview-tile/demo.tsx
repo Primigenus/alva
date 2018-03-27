@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import Copy from '../copy';
-import Layout from '../layout';
 import { Headline } from '../headline';
 import { PreviewTile } from './index';
+import Layout from '../layout';
 import Space, { Size } from '../space';
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>): string => e.target.value;
