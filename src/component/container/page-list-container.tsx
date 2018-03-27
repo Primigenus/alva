@@ -21,23 +21,17 @@ export class PageListContainer extends React.Component<{}> {
 	@MobX.observable protected focusedPage: boolean = false;
 	@MobX.observable protected pageNameInputValue: string = '';
 
-	@MobX.observable protected pageStates: PageStateProps[];
-
-	public componentWillMount(): void {
-		this.getProjectPages().map(page => {
-			console.log(this.pageStates);
-		});
-	}
-
 	protected getActivePage(target: HTMLElement, name: string): string | void {
 		const ids: string[] = this.getProjectPages().map(page => page.getId());
 		const data = target.dataset;
 		ids.forEach((id: string) => {
 			if (id === data[name]) {
 				if (Object.keys(data)[0] === 'id') {
+					console.log(data[name], 'id');
 					return (this.activePage = data[name] || '');
 				}
 				if (Object.keys(data)[0] === 'titleId') {
+					console.log(data[name], 'titleId');
 					return (this.activeTitle = data[name] || '');
 				}
 			}
@@ -57,10 +51,8 @@ export class PageListContainer extends React.Component<{}> {
 
 	protected handleClick(e: React.MouseEvent<HTMLElement>): void {
 		e.preventDefault();
-		// this.getActivePage(e.target as HTMLElement, 'id');
-		// this.getActivePage(e.target as HTMLElement, 'titleId');
-		console.log(e.target, 'new ********');
-		this.toggleFocus();
+		this.getActivePage(e.target as HTMLElement, 'id');
+		this.getActivePage(e.target as HTMLElement, 'titleId');
 	}
 
 	protected handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {
@@ -73,30 +65,30 @@ export class PageListContainer extends React.Component<{}> {
 		return (this.editablePage = !this.editablePage);
 	}
 
+	@MobX.action
+	protected handleFocus(): boolean {
+		return (this.focusedPage = !this.focusedPage);
+	}
+
 	protected handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
 		this.getInputValueName(e.target.value);
 	}
 
 	public render(): JSX.Element {
 		return (
-			<div onDoubleClick={e => this.handleDoubleClick(e)}>
+			<div onClick={e => this.handleClick(e)} onDoubleClick={e => this.handleDoubleClick(e)}>
 				<PageList
 					activePage={this.activePage}
 					activeTitle={this.activeTitle}
 					editable={this.editablePage}
 					focused={this.focusedPage}
 					handleChange={this.handleInputChange}
-					handleClick={e => this.handleClick(e)}
 					onEdit={() => this.handleEditMode}
+					onFocus={() => this.handleFocus}
 					pages={this.getProjectPages()}
 					value={this.pageNameInputValue}
 				/>
 			</div>
 		);
-	}
-
-	@MobX.action
-	protected toggleFocus(): void {
-		this.focusedPage = !this.focusedPage;
 	}
 }

@@ -13,30 +13,26 @@ export interface PageListProps {
 	handleChange: React.ChangeEventHandler<HTMLInputElement>;
 	pages: PageRef[];
 	value: string;
-	handleClick(e: React.MouseEvent<HTMLElement>): void;
 	onEdit(): void;
+	onFocus(): boolean;
 }
 
 export const PageList: React.StatelessComponent<PageListProps> = (props): JSX.Element => (
 	<Layout>
 		{props.pages.map((page: PageRef, i: number) => {
+			let focused = false;
 			if (page.getId() === props.activePage) {
-				// console.log(props.onFocus());
+				focused = props.onFocus();
 			}
-			if (page.getId() === props.activeTitle) {
-				props.onEdit();
-			}
-
 			console.log(props, 'this are the props');
 			return (
 				<Space key={i} size={Size.S}>
 					<PreviewTile
 						id={page.getId()}
 						editable={false}
-						focused={props.focused}
+						focused={focused}
 						handleChange={props.handleChange}
 						name={page.getName()}
-						onClick={e => props.handleClick(e)}
 						value={props.value}
 					/>
 				</Space>
