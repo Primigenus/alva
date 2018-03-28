@@ -16,11 +16,6 @@ export class PageListContainer extends React.Component<{}> {
 		return projectPages.map(page => new PageViewModel(page));
 	}
 
-	protected getProjectPages(): PageRef[] {
-		const project: Project | undefined = Store.getInstance().getCurrentProject();
-		return project ? project.getPages() : [];
-	}
-
 	public render(): JSX.Element {
 		return <PageList pages={this.generatePageViewModel()} />;
 	}

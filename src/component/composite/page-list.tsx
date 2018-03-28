@@ -16,17 +16,18 @@ export class PageList extends React.Component<PageListProps> {
 		return (
 			<Layout>
 				{this.props.pages.map((page: PageViewModel, i: number) => {
-					console.log(page.focused, 'the page');
+					console.log(page.handleDoubleClick, 'the page');
 					return (
 						<Space key={i} size={Size.S}>
 							<PreviewTile
 								id={page.page.getId()}
 								editable={page.editable}
 								focused={page.focused}
-								handleChange={() => ''}
+								onChange={e => page.handleChange(e)}
 								name={page.name}
-								onClick={() => page.onClick() || false}
-								value={'foo'}
+								onClick={e => page.handleClick(e)}
+								onDoubleClick={e => page.handleDoubleClick(e)}
+								value={page.name}
 							/>
 						</Space>
 					);

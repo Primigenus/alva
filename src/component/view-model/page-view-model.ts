@@ -8,11 +8,25 @@ export class PageViewModel {
 	public constructor(page: PageRef) {
 		this.page = page;
 		this.name = page.getName();
-		this.onClick = this.onClick.bind(this);
+
+		this.handleChange = this.handleChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+		this.handleDoubleClick = this.handleDoubleClick.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 	}
-	public onClick(): void {
+	public handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+		const value = e.currentTarget.value;
+		// page set name
+		console.log(value, 'this is the handle change');
+	}
+	public handleClick(e: React.MouseEvent<HTMLElement>): void {
+		e.preventDefault();
 		this.onFocus();
+	}
+
+	public handleDoubleClick(e: React.MouseEvent<HTMLElement>): void {
+		e.preventDefault();
+		this.editable = !this.editable;
 	}
 	public onFocus(): void {
 		this.focused = !this.focused;
