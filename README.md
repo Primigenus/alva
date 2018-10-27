@@ -24,7 +24,7 @@ There is no such thing as out-dated and static PNG screens, as the current versi
 ## Installation and usage
 
 Please follow the installation and usage guidelines matching your purpose for Alva.
-
+//do follow the installation details
 ### As a designer
 
 [Download](https://github.com/meetalva/alva/releases) the pre-built release of Alva.
